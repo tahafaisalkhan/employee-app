@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
+  
+  <display-name>Employee Management System</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>register.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.example.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/RegisterServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.example.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DBServlet</servlet-name>
+    <servlet-class>com.example.DBServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DBServlet</servlet-name>
+    <url-pattern>/DBServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AddEmployeeServlet</servlet-name>
+    <servlet-class>com.example.AddEmployeeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddEmployeeServlet</servlet-name>
+    <url-pattern>/AddEmployeeServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RemoveEmployeeServlet</servlet-name>
+    <servlet-class>com.example.RemoveEmployeeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoveEmployeeServlet</servlet-name>
+    <url-pattern>/RemoveEmployeeServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.example.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>EmployeeInfoServlet</servlet-name>
+    <servlet-class>com.example.EmployeeInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeInfoServlet</servlet-name>
+    <url-pattern>/api/employee</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddEmployeeJsonServlet</servlet-name>
+    <servlet-class>com.example.AddEmployeeJsonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddEmployeeJsonServlet</servlet-name>
+    <url-pattern>/api/addEmployeeJson</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteEmployeeJsonServlet</servlet-name>
+    <servlet-class>com.example.DeleteEmployeeJsonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteEmployeeJsonServlet</servlet-name>
+    <url-pattern>/api/deleteEmployeeJson</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateEmployeeJsonServlet</servlet-name>
+    <servlet-class>com.example.UpdateEmployeeJsonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateEmployeeJsonServlet</servlet-name>
+    <url-pattern>/api/updateEmployeeJson</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MultiThreadedEmployeeFetcherServlet</servlet-name>
+    <servlet-class>com.example.MultiThreadedEmployeeFetcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MultiThreadedEmployeeFetcherServlet</servlet-name>
+    <url-pattern>/MultiThreadedEmployeeFetcherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EmployeeDataToFileServlet</servlet-name>
+    <servlet-class>com.example.EmployeeDataToFileServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>EmployeeDataToFileServlet</servlet-name>
+    <url-pattern>/EmployeeDataToFileServlet</url-pattern>
+</servlet-mapping>
+
+  <servlet>
+    <servlet-name>EmployeeDataToXLSFileServlet</servlet-name>
+    <servlet-class>com.example.EmployeeDataToXLSFileServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>EmployeeDataToXLSFileServlet</servlet-name>
+    <url-pattern>/EmployeeDataToXLSFileServlet</url-pattern>
+</servlet-mapping>
+  
+    <servlet>
+    <servlet-name>AddEmployeeClientServlet</servlet-name>
+    <servlet-class>com.example.AddEmployeeClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddEmployeeClientServlet</servlet-name>
+    <url-pattern>/AddEmployeeClientServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteEmployeeClientServlet</servlet-name>
+    <servlet-class>com.example.DeleteEmployeeClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteEmployeeClientServlet</servlet-name>
+    <url-pattern>/DeleteEmployeeClientServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateEmployeeClientServlet</servlet-name>
+    <servlet-class>com.example.UpdateEmployeeClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateEmployeeClientServlet</servlet-name>
+    <url-pattern>/UpdateEmployeeClientServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <servlet-class>com.example.UploadFileServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <url-pattern>/UploadFileServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>com.example.AdminServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/admin</url-pattern>
+</servlet-mapping>
+  
+</web-app>
