@@ -8,20 +8,26 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function toggleSidebar() {
+        function toggleSidebar() 
+        {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) {
+            if (sidebar.classList.contains('active')) 
+            {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
-            } else {
+            } 
+            else 
+            {
                 sidebar.classList.add('active');
                 mainContent.classList.add('active');
             }
         }
 
-        $(document).ready(function() {
-            $('#uploadForm').on('submit', function(event) {
+        $(document).ready(function() 
+        		{
+            $('#uploadForm').on('submit', function(event) 
+            		{
                 event.preventDefault();
                 var formData = new FormData(this);
 

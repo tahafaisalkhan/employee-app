@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @MultipartConfig
-public class UploadFileServlet extends HttpServlet {
+public class UploadFileServlet extends HttpServlet 
+{
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,22 +28,32 @@ public class UploadFileServlet extends HttpServlet {
         String fileType = filePart.getContentType();
         List<String> allowedTypes = List.of("text/plain", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-        if (!allowedTypes.contains(fileType)) {
+        if (!allowedTypes.contains(fileType)) 
+        {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Unsupported file type.");
             return;
         }
 
-        try (InputStream fileContent = filePart.getInputStream()) {
-            if (fileName.endsWith(".txt")) {
+        try (InputStream fileContent = filePart.getInputStream()) 
+        {
+            if (fileName.endsWith(".txt")) 
+            {
                 processTxtFile(fileContent);
-            } else if (fileName.endsWith(".xls")) {
-                processExcelFile(fileContent, false);
-            } else if (fileName.endsWith(".xlsx")) {
+            } 
+            else if (fileName.endsWith(".xls")) 
+            {
+                
+            	processExcelFile(fileContent, false);
+            } 
+            else if (fileName.endsWith(".xlsx")) 
+            {
                 processExcelFile(fileContent, true);
             }
             response.getWriter().write("File uploaded and processed successfully.");
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("An error occurred while processing the file: " + e.getMessage());
@@ -50,11 +61,14 @@ public class UploadFileServlet extends HttpServlet {
     }
 
     private void processTxtFile(InputStream fileContent) throws Exception {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent))) 
+        {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) 
+            {
                 String[] columns = line.split("\\|");
-                if (columns.length >= 4) {
+                if (columns.length >= 4) 
+                {
                     String firstName = columns[1];
                     String lastName = columns[2];
                     String email = columns[3];
@@ -67,40 +81,53 @@ public class UploadFileServlet extends HttpServlet {
 
     private void processExcelFile(InputStream fileContent, boolean isXlsx) throws Exception {
         Workbook workbook = null;
-        try {
-            if (isXlsx) {
+        try 
+        {
+            if (isXlsx) 
+            {
                 workbook = new XSSFWorkbook(fileContent);
-            } else {
+            } 
+            else 
+            {
                 workbook = new HSSFWorkbook(fileContent);
             }
             Sheet sheet = workbook.getSheetAt(0);
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Skip header row
+            for (Row row : sheet) 
+            {
+                if (row.getRowNum() == 0) continue;
                 String firstName = getCellValue(row, 0);
                 String lastName = getCellValue(row, 1);
                 String email = getCellValue(row, 2);
                 String hireDate = getCellValue(row, 3);
-                if (firstName != null && lastName != null && email != null && hireDate != null) {
+                if (firstName != null && lastName != null && email != null && hireDate != null) 
+                {
                     addEmployeeToDatabase(firstName, lastName, email, hireDate);
                 }
             }
-        } finally {
-            if (workbook != null) {
+        } 
+        finally 
+        {
+            if (workbook != null) 
+            {
                 workbook.close();
             }
         }
     }
 
-    private String getCellValue(Row row, int cellNum) {
+    private String getCellValue(Row row, int cellNum) 
+    {
         Cell cell = row.getCell(cellNum);
         if (cell == null) return null;
-        switch (cell.getCellType()) {
+        switch (cell.getCellType()) 
+        {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue().toString(); // Convert date to string
-                } else {
+                    return cell.getDateCellValue().toString();
+                } 
+                else 
+                {
                     return Double.toString(cell.getNumericCellValue());
                 }
             case BOOLEAN:
@@ -116,7 +143,8 @@ public class UploadFileServlet extends HttpServlet {
         String jdbcPassword = "tahafaisalkhan";
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+        {
             String sql = "INSERT INTO employees (first_name, last_name, email, hire_date) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, firstName);
