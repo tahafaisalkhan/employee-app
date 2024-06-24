@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="com.example.Employee" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,26 +47,25 @@
                 </thead>
                 <tbody>
                     <%
-                        List<Map<String, String>> employees = (List<Map<String, String>>) request.getAttribute("employees");
+                        List<Employee> employees = (List<Employee>) request.getAttribute("employees");
                         if (employees != null) {
-                            for (Map<String, String> employee : employees) {
+                            for (Employee employee : employees) {
                     %>
                                 <tr>
-                                    <td><%= employee.get("id") %></td>
-                                    <td><%= employee.get("first_name") %></td>
-                                    <td><%= employee.get("last_name") %></td>
-                                    <td><%= employee.get("email") %></td>
+                                    <td><%= employee.getId() %></td>
+                                    <td><%= employee.getFirstName() %></td>
+                                    <td><%= employee.getLastName() %></td>
+                                    <td><%= employee.getEmail() %></td>
                                     <td>
                                         <form action="RemoveEmployeeServlet" method="post" onsubmit="return confirm('Are you sure you want to remove this employee?')">
-                                            <input type="hidden" name="email" value="<%= employee.get("email") %>">
+                                            <input type="hidden" name="email" value="<%= employee.getEmail() %>">
                                             <button type="submit" class="btn-remove">Remove</button>
                                         </form>
                                     </td>
                                 </tr>
                     <%
                             }
-                        } 
-                        else {
+                        } else {
                     %>
                             <tr>
                                 <td colspan="5">No data available</td>

@@ -10,9 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DBServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -20,7 +18,7 @@ public class DBServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("DBServlet doGet method called");
 
-        List<Map<String, String>> employees = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
 
         String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
         String jdbcUser = "root";
@@ -33,25 +31,21 @@ public class DBServlet extends HttpServlet {
                  Statement statement = connection.createStatement()) 
             {
 
-                //System.out.println("Connected to the database successfully!");
-                
                 String selectSQL = "SELECT * FROM employees";
                 ResultSet resultSet = statement.executeQuery(selectSQL);
 
                 while (resultSet.next()) 
                 {
-                    Map<String, String> row = new HashMap<>();
-                    row.put("id", String.valueOf(resultSet.getInt("id")));
-                    row.put("first_name", resultSet.getString("first_name"));
-                    row.put("last_name", resultSet.getString("last_name"));
-                    row.put("email", resultSet.getString("email"));
-                    row.put("hire_date", resultSet.getDate("hire_date").toString());
+                    Employee employee = new Employee();
+                    employee.setId(resultSet.getInt("id"));
+                    employee.setFirstName(resultSet.getString("first_name"));
+                    employee.setLastName(resultSet.getString("last_name"));
+                    employee.setEmail(resultSet.getString("email"));
+                    employee.setHireDate(resultSet.getDate("hire_date").toString());
 
-                    employees.add(row);
+                    employees.add(employee);
                 }
                 resultSet.close();
-
-                //System.out.println("Employees fetched: " + employees);
             }
         } 
         catch (Exception e) 
@@ -59,7 +53,7 @@ public class DBServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        System.out.println("Employees data being sent to JSP2: " + employees);
+        System.out.println("Employees data being sent to JSP: " + employees);
 
         request.setAttribute("employees", employees);
         request.getRequestDispatcher("index.jsp").forward(request, response);

@@ -11,26 +11,24 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EmployeeDetailsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Map<String, String>> employeeDetails = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        List<EmployeeDetail> employeeDetails = new ArrayList<>();
 
         String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try 
-        {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Driver loaded successfully.");
-            
+
             try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
                  Statement statement = connection.createStatement()) {
 
@@ -45,22 +43,24 @@ public class EmployeeDetailsServlet extends HttpServlet {
 
                 while (resultSet.next()) 
                 {
-                    Map<String, String> row = new HashMap<>();
-                    row.put("id", String.valueOf(resultSet.getInt("id")));
-                    row.put("first_name", resultSet.getString("first_name"));
-                    row.put("last_name", resultSet.getString("last_name"));
-                    row.put("email", resultSet.getString("email"));
-                    row.put("hire_date", resultSet.getDate("hire_date").toString());
-                    row.put("address", resultSet.getString("address"));
-                    row.put("street", resultSet.getString("street"));
-                    row.put("province", resultSet.getString("province"));
-                    row.put("city", resultSet.getString("city"));
-                    row.put("country", resultSet.getString("country"));
-                    row.put("phone_number", resultSet.getString("phone_number"));
-                    
-                    System.out.println("Processed employee: " + resultSet.getString("first_name"));
-                    
-                    employeeDetails.add(row);
+                    Employee employee = new Employee();
+                    employee.setId(resultSet.getInt("id"));
+                    employee.setFirstName(resultSet.getString("first_name"));
+                    employee.setLastName(resultSet.getString("last_name"));
+                    employee.setEmail(resultSet.getString("email"));
+                    employee.setHireDate(resultSet.getDate("hire_date").toString());
+
+                    EmployeeDetail detail = new EmployeeDetail();
+                    detail.setId(resultSet.getInt("id"));
+                    detail.setAddress(resultSet.getString("address"));
+                    detail.setStreet(resultSet.getString("street"));
+                    detail.setProvince(resultSet.getString("province"));
+                    detail.setCity(resultSet.getString("city"));
+                    detail.setCountry(resultSet.getString("country"));
+                    detail.setPhoneNumber(resultSet.getString("phone_number"));
+
+                    employees.add(employee);
+                    employeeDetails.add(detail);
                 }
                 resultSet.close();
                 System.out.println("All employee data processed.");
@@ -71,8 +71,9 @@ public class EmployeeDetailsServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        request.setAttribute("employees", employees);
         request.setAttribute("employeeDetails", employeeDetails);
-        System.out.println("Set employeeDetails attribute with data: " + employeeDetails);
+        System.out.println("Set employees and employeeDetails attributes with data.");
 
         request.getRequestDispatcher("/employeeDetails.jsp").forward(request, response);
         System.out.println("Forwarded to employeeDetails.jsp.");
