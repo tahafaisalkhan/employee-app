@@ -39,7 +39,7 @@ public class EmployeeDetailsServlet extends HttpServlet {
                 String joinSQL = "SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, " +
                                  "d.address, d.street, d.province, d.city, d.country, d.phone_number " +
                                  "FROM employees e " +
-                                 "JOIN employee_details d ON e.id = d.id";
+                                 "LEFT JOIN employee_details d ON e.id = d.id";
                 ResultSet resultSet = statement.executeQuery(joinSQL);
                 System.out.println("Fetched data from joined tables.");
 
