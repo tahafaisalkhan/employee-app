@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class UpdateEmployeeJsonServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -34,43 +35,85 @@ public class UpdateEmployeeJsonServlet extends HttpServlet {
         String lastName = jsonObject.get("lastName").getAsString();
         String email = jsonObject.get("email").getAsString();
         String hireDate = jsonObject.get("hireDate").getAsString();
+        String address = jsonObject.get("address").getAsString();
+        String street = jsonObject.get("street").getAsString();
+        String province = jsonObject.get("province").getAsString();
+        String city = jsonObject.get("city").getAsString();
+        String country = jsonObject.get("country").getAsString();
+        String phoneNumber = jsonObject.get("phoneNumber").getAsString();
 
         String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
+        Connection connection = null;
+
         try 
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            connection.setAutoCommit(false);
+
+            String sqlEmployee = "UPDATE employees SET first_name = ?, last_name = ?, email = ?, hire_date = ? WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sqlEmployee)) 
             {
-                String sql = "UPDATE employees SET first_name = ?, last_name = ?, email = ?, hire_date = ? WHERE id = ?";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) 
+                statement.setString(1, firstName);
+                statement.setString(2, lastName);
+                statement.setString(3, email);
+                statement.setString(4, hireDate);
+                statement.setInt(5, Integer.parseInt(id));
+                statement.executeUpdate();
+            }
+
+            String sqlDetails = "UPDATE employee_details SET address = ?, street = ?, province = ?, city = ?, country = ?, phone_number = ? WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sqlDetails)) 
+            {
+                statement.setString(1, address);
+                statement.setString(2, street);
+                statement.setString(3, province);
+                statement.setString(4, city);
+                statement.setString(5, country);
+                statement.setString(6, phoneNumber);
+                statement.setInt(7, Integer.parseInt(id));
+                statement.executeUpdate();
+            }
+
+            connection.commit();
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("message", "Employee updated successfully");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(jsonResponse.toString());
+        } 
+        catch (Exception e) {
+            if (connection != null) 
+            {
+                try {
+                    connection.rollback();
+                } 
+                catch (SQLException rollbackEx) 
                 {
-                    statement.setString(1, firstName);
-                    statement.setString(2, lastName);
-                    statement.setString(3, email);
-                    statement.setString(4, hireDate);
-                    statement.setInt(5, Integer.parseInt(id));
-                    int rowsAffected = statement.executeUpdate();
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    if (rowsAffected > 0) 
-                    {
-                        response.getWriter().write("{\"message\":\"Employee updated successfully.\"}");
-                    } 
-                    else 
-                    {
-                        response.getWriter().write("{\"message\":\"Employee not found.\"}");
-                    }
+                    rollbackEx.printStackTrace();
                 }
             }
-        } 
-        catch (Exception e) 
-        {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"message\":\"An error occurred: " + e.getMessage() + "\"}");
+        } 
+        finally 
+        {
+            if (connection != null) 
+            {
+                try 
+                {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } 
+                catch (SQLException closeEx) 
+                {
+                    closeEx.printStackTrace();
+                }
+            }
         }
     }
 }

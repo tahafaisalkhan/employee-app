@@ -14,8 +14,9 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @MultipartConfig
 public class UploadFileServlet extends HttpServlet 
@@ -43,8 +44,7 @@ public class UploadFileServlet extends HttpServlet
             } 
             else if (fileName.endsWith(".xls")) 
             {
-                
-            	processExcelFile(fileContent, false);
+                processExcelFile(fileContent, false);
             } 
             else if (fileName.endsWith(".xlsx")) 
             {
@@ -67,13 +67,19 @@ public class UploadFileServlet extends HttpServlet
             while ((line = reader.readLine()) != null) 
             {
                 String[] columns = line.split("\\|");
-                if (columns.length >= 4) 
+                if (columns.length >= 10) 
                 {
                     String firstName = columns[1];
                     String lastName = columns[2];
                     String email = columns[3];
                     String hireDate = columns[4];
-                    addEmployeeToDatabase(firstName, lastName, email, hireDate);
+                    String address = columns[5];
+                    String street = columns[6];
+                    String province = columns[7];
+                    String city = columns[8];
+                    String country = columns[9];
+                    String phoneNumber = columns[10];
+                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber);
                 }
             }
         }
@@ -99,9 +105,15 @@ public class UploadFileServlet extends HttpServlet
                 String lastName = getCellValue(row, 1);
                 String email = getCellValue(row, 2);
                 String hireDate = getCellValue(row, 3);
+                String address = getCellValue(row, 4);
+                String street = getCellValue(row, 5);
+                String province = getCellValue(row, 6);
+                String city = getCellValue(row, 7);
+                String country = getCellValue(row, 8);
+                String phoneNumber = getCellValue(row, 9);
                 if (firstName != null && lastName != null && email != null && hireDate != null) 
                 {
-                    addEmployeeToDatabase(firstName, lastName, email, hireDate);
+                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber);
                 }
             }
         } 
@@ -137,21 +149,62 @@ public class UploadFileServlet extends HttpServlet
         }
     }
 
-    private void addEmployeeToDatabase(String firstName, String lastName, String email, String hireDate) throws Exception {
+    private void addEmployeeToDatabase(String firstName, String lastName, String email, String hireDate, String address, String street, String province, String city, String country, String phoneNumber) throws Exception {
         String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
-        {
-            String sql = "INSERT INTO employees (first_name, last_name, email, hire_date) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            // Begin transaction
+            connection.setAutoCommit(false);
+
+            // Insert into employees table
+            String insertEmployeeSQL = "INSERT INTO employees (first_name, last_name, email, hire_date) VALUES (?, ?, ?, ?)";
+            int employeeId;
+            try (PreparedStatement statement = connection.prepareStatement(insertEmployeeSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, firstName);
                 statement.setString(2, lastName);
                 statement.setString(3, email);
                 statement.setString(4, hireDate);
                 statement.executeUpdate();
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        employeeId = generatedKeys.getInt(1);
+                    } else {
+                        throw new SQLException("Failed to retrieve employee ID.");
+                    }
+                }
+            }
+
+            // Insert into employee_details table
+            String insertDetailsSQL = "INSERT INTO employee_details (id, address, street, province, city, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(insertDetailsSQL)) {
+                statement.setInt(1, employeeId);
+                statement.setString(2, address);
+                statement.setString(3, street);
+                statement.setString(4, province);
+                statement.setString(5, city);
+                statement.setString(6, country);
+                statement.setString(7, phoneNumber);
+                statement.executeUpdate();
+            }
+
+            // Commit transaction
+            connection.commit();
+        } catch (Exception e) {
+            // Rollback transaction on error
+            if (connection != null) {
+                connection.rollback();
+            }
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.setAutoCommit(true);
+                connection.close();
             }
         }
     }

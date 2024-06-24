@@ -168,5 +168,14 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/admin</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>EmployeeDetailsServlet</servlet-name>
+    <servlet-class>com.example.EmployeeDetailsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>EmployeeDetailsServlet</servlet-name>
+    <url-pattern>/employeeDetails</url-pattern>
+</servlet-mapping>
   
 </web-app>

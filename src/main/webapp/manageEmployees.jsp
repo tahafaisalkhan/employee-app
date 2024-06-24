@@ -8,13 +8,17 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function toggleSidebar() {
+        function toggleSidebar() 
+        {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) {
+            if (sidebar.classList.contains('active')) 
+            {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
-            } else {
+            } 
+            else 
+            {
                 sidebar.classList.add('active');
                 mainContent.classList.add('active');
             }
@@ -49,6 +53,24 @@
                     <label for="hireDate">Hire Date (YYYY-MM-DD):</label>
                     <input type="date" id="hireDate" name="hireDate" required><br>
 
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required><br>
+
+                    <label for="street">Street:</label>
+                    <input type="text" id="street" name="street" required><br>
+
+                    <label for="province">Province:</label>
+                    <input type="text" id="province" name="province" required><br>
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required><br>
+
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required><br>
+
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+
                     <button type="submit" class="btn">Add Employee</button>
                 </form>
                 <div id="addEmployeeResult"></div>
@@ -81,6 +103,24 @@
 
                     <label for="hireDate">Hire Date (YYYY-MM-DD):</label>
                     <input type="date" id="hireDate" name="hireDate"><br>
+
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address"><br>
+
+                    <label for="street">Street:</label>
+                    <input type="text" id="street" name="street"><br>
+
+                    <label for="province">Province:</label>
+                    <input type="text" id="province" name="province"><br>
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city"><br>
+
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country"><br>
+
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber"><br>
 
                     <button type="submit" class="btn">Update Employee</button>
                 </form>

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class RemoveEmployeeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -21,30 +22,85 @@ public class RemoveEmployeeServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try {
+        Connection connection = null;
+
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            connection.setAutoCommit(false);
+
+            String getIdSQL = "SELECT id FROM employees WHERE email = ?";
+            int employeeId = -1;
+            try (PreparedStatement getIdStmt = connection.prepareStatement(getIdSQL)) 
             {
-                String sql = "DELETE FROM employees WHERE email = ?";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) 
+                getIdStmt.setString(1, email);
+                ResultSet resultSet = getIdStmt.executeQuery();
+                if (resultSet.next()) 
                 {
-                    statement.setString(1, email);
-                    int rowsAffected = statement.executeUpdate();
-                    if (rowsAffected > 0) 
-                    {
-                        System.out.println("Employee with email " + email + " removed successfully.");
-                    } 
-                    else 
-                    {
-                        System.out.println("No employee found with email " + email);
-                    }
+                    employeeId = resultSet.getInt("id");
+                }
+                else 
+                {
+                    System.out.println("No employee found with email " + email);
+                    response.sendRedirect("DBServlet");
+                    return;
                 }
             }
+
+            String deleteDetailsSQL = "DELETE FROM employee_details WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(deleteDetailsSQL)) 
+            {
+                statement.setInt(1, employeeId);
+                statement.executeUpdate();
+            }
+
+            String deleteEmployeeSQL = "DELETE FROM employees WHERE email = ?";
+            try (PreparedStatement statement = connection.prepareStatement(deleteEmployeeSQL)) 
+            {
+                statement.setString(1, email);
+                int rowsAffected = statement.executeUpdate();
+                if (rowsAffected > 0) 
+                {
+                    System.out.println("Employee with email " + email + " removed successfully.");
+                } 
+                else 
+                {
+                    System.out.println("No employee found with email " + email);
+                }
+            }
+
+            connection.commit();
         } 
         catch (Exception e) 
         {
+            if (connection != null) 
+            {
+                try 
+                {
+                    connection.rollback();
+                } 
+                catch (Exception rollbackEx) 
+                {
+                    rollbackEx.printStackTrace();
+                }
+            }
             System.out.println("Error while removing employee with email " + email);
             e.printStackTrace();
+        } 
+        finally 
+        {
+            if (connection != null) 
+            {
+                try 
+                {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } 
+                catch (Exception closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
         }
 
         response.sendRedirect("DBServlet");

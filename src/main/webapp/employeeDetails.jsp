@@ -5,8 +5,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Employee Page</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <title>Employee Details</title>
+    <link rel="stylesheet" type="text/css" href="css/employeeDetail.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script>
         function toggleSidebar() {
@@ -32,7 +32,7 @@
                     <button type="submit" class="btn-logout">Logout</button>
                 </form>
             </div>
-            <h1 class="header-title">Employee List</h1>
+            <h1 class="header-title">Employee Details</h1>
         </div>
         <div class="content">
             <table>
@@ -42,45 +42,46 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
-                        <th>Actions</th>
+                        <th>Hire Date</th>
+                        <th>Address</th>
+                        <th>Street</th>
+                        <th>Province</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Phone Number</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        List<Map<String, String>> employees = (List<Map<String, String>>) request.getAttribute("employees");
-                        if (employees != null) {
-                            for (Map<String, String> employee : employees) {
+                        List<Map<String, String>> employeeDetails = (List<Map<String, String>>) request.getAttribute("employeeDetails");
+                        if (employeeDetails != null) {
+                            for (Map<String, String> employee : employeeDetails) {
                     %>
                                 <tr>
                                     <td><%= employee.get("id") %></td>
                                     <td><%= employee.get("first_name") %></td>
                                     <td><%= employee.get("last_name") %></td>
                                     <td><%= employee.get("email") %></td>
-                                    <td>
-                                        <form action="RemoveEmployeeServlet" method="post" onsubmit="return confirm('Are you sure you want to remove this employee?')">
-                                            <input type="hidden" name="email" value="<%= employee.get("email") %>">
-                                            <button type="submit" class="btn-remove">Remove</button>
-                                        </form>
-                                    </td>
+                                    <td><%= employee.get("hire_date") %></td>
+                                    <td><%= employee.get("address") %></td>
+                                    <td><%= employee.get("street") %></td>
+                                    <td><%= employee.get("province") %></td>
+                                    <td><%= employee.get("city") %></td>
+                                    <td><%= employee.get("country") %></td>
+                                    <td><%= employee.get("phone_number") %></td>
                                 </tr>
                     <%
                             }
-                        } 
-                        else {
+                        } else {
                     %>
                             <tr>
-                                <td colspan="5">No data available</td>
+                                <td colspan="11">No data available</td>
                             </tr>
                     <%
                         }
                     %>
                 </tbody>
             </table>
-            <div class="center">
-                <form action="addEmployee.jsp" method="get">
-                    <button type="submit" class="btn-add">Add Employee</button>
-                </form>
-            </div>
         </div>
     </div>
 </body>

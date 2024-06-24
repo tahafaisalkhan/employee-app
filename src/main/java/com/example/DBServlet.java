@@ -51,7 +51,7 @@ public class DBServlet extends HttpServlet {
                 }
                 resultSet.close();
 
-                System.out.println("Employees fetched: " + employees);
+                //System.out.println("Employees fetched: " + employees);
             }
         } 
         catch (Exception e) 

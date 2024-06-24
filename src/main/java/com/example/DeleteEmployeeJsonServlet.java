@@ -33,34 +33,71 @@ public class DeleteEmployeeJsonServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
+        Connection connection = null;
+
         try 
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            connection.setAutoCommit(false);
+            
+            String deleteDetailsSQL = "DELETE FROM employee_details WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(deleteDetailsSQL)) 
             {
-                String sql = "DELETE FROM employees WHERE id = ?";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) 
+                statement.setInt(1, Integer.parseInt(id));
+                statement.executeUpdate();
+            }
+
+            String deleteEmployeeSQL = "DELETE FROM employees WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(deleteEmployeeSQL)) 
+            {
+                statement.setInt(1, Integer.parseInt(id));
+                int rowsAffected = statement.executeUpdate();
+                
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                if (rowsAffected > 0) 
                 {
-                    statement.setInt(1, Integer.parseInt(id));
-                    int rowsAffected = statement.executeUpdate();
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    if (rowsAffected > 0) 
-                    {
-                        response.getWriter().write("{\"message\":\"Employee deleted successfully.\"}");
-                    } 
-                    else 
-                    {
-                        response.getWriter().write("{\"message\":\"Employee not found.\"}");
-                    }
+                    response.getWriter().write("{\"message\":\"Employee deleted successfully.\"}");
+                } 
+                else 
+                {
+                    response.getWriter().write("{\"message\":\"Employee not found.\"}");
                 }
             }
-        } 
-        catch (Exception e) 
+
+            connection.commit();
+        } catch (Exception e)
         {
+            if (connection != null) 
+            {
+                try 
+                {
+                    connection.rollback();
+                } catch (Exception rollbackEx) 
+                {
+                    rollbackEx.printStackTrace();
+                }
+            }
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"message\":\"An error occurred: " + e.getMessage() + "\"}");
+        } 
+        finally 
+        {
+            
+        	if (connection != null) 
+            {
+                try 
+                {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } 
+                catch (Exception closeEx) 
+                {
+                    closeEx.printStackTrace();
+                }
+            }
         }
     }
 }

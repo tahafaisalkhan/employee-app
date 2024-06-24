@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/okio-jvm-3.9.0.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/poi-5.2.5.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/poi-ooxml-5.2.5.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jstl-1.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

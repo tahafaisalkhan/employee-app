@@ -6,72 +6,96 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     flex-direction: column;
+    height: 100vh;
+}
+
+.header-container {
+    margin-bottom: 20px;
 }
 
 h1 {
-    text-align: center;
     color: #333;
-    margin-top: 20px;
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
 }
 
 .container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 400px;
     width: 100%;
+    overflow-y: auto;
+    max-height: 80vh; 
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-form {
-    width: 50%;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.form-container {
+    width: 100%;
 }
 
 label {
     display: block;
-    margin-top: 10px;
+    margin-bottom: 8px;
+    font-weight: bold;
     color: #333;
 }
 
-input {
-    width: 97%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 10px;
+input[type="text"], input[type="email"], input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
 button {
+    width: 100%;
+    padding: 12px;
     background-color: #FF8C42;
     border: none;
     color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 10px 0;
     cursor: pointer;
-    width: 100%;
     border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #be7443;
 }
 
 .center {
+    width: 100%;
     text-align: center;
     margin-top: 20px;
 }
 
-.center button {
-    width: 150px;
-    height: 50px;
-    font-size: 14px;
-    padding: 10px;
-    word-wrap: break-word;
+button.button {
+    background-color: #FF8C42;
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-top: 20px;
 }
 
+button.button:hover {
+    background-color: #be7443;
+}
 
+p {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}

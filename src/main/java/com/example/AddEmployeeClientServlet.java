@@ -16,12 +16,19 @@ public class AddEmployeeClientServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String hireDate = request.getParameter("hireDate");
+        String address = request.getParameter("address");
+        String street = request.getParameter("street");
+        String province = request.getParameter("province");
+        String city = request.getParameter("city");
+        String country = request.getParameter("country");
+        String phoneNumber = request.getParameter("phoneNumber");
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
-        String json = String.format("{\"firstName\": \"%s\", \"lastName\": \"%s\", \"email\": \"%s\", \"hireDate\": \"%s\"}",
-                firstName, lastName, email, hireDate);
-        
+        String json = String.format(
+                "{\"firstName\": \"%s\", \"lastName\": \"%s\", \"email\": \"%s\", \"hireDate\": \"%s\", \"address\": \"%s\", \"street\": \"%s\", \"province\": \"%s\", \"city\": \"%s\", \"country\": \"%s\", \"phoneNumber\": \"%s\"}",
+                firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber);
+
         RequestBody body = RequestBody.create(mediaType, json);
         Request req = new Request.Builder()
                 .url("http://localhost:8930/Proj2/api/addEmployeeJson")
@@ -43,8 +50,7 @@ public class AddEmployeeClientServlet extends HttpServlet {
                 response.getWriter().write("Failed to add employee. Error: " + res.message());
             }
         } 
-        catch (IOException e) 
-        {
+        catch (IOException e) {
             e.printStackTrace();
             response.getWriter().write("An error occurred: " + e.getMessage());
         }
