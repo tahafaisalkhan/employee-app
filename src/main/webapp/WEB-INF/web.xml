@@ -177,5 +177,14 @@
     <servlet-name>EmployeeDetailsServlet</servlet-name>
     <url-pattern>/employeeDetails</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>SearchEmployeeServlet</servlet-name>
+    <servlet-class>com.example.SearchEmployeeServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>SearchEmployeeServlet</servlet-name>
+    <url-pattern>/SearchEmployeeServlet</url-pattern>
+</servlet-mapping>
   
 </web-app>
