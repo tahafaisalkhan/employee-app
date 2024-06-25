@@ -25,13 +25,17 @@ public class AdminServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            {
                 String sql = "SELECT id, username FROM users";
                 try (PreparedStatement statement = connection.prepareStatement(sql);
-                     ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
+                     ResultSet resultSet = statement.executeQuery()) 
+                {
+                    while (resultSet.next()) 
+                    {
                         Map<String, String> user = new HashMap<>();
                         user.put("id", resultSet.getString("id"));
                         user.put("username", resultSet.getString("username"));
@@ -39,7 +43,9 @@ public class AdminServlet extends HttpServlet {
                     }
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
 

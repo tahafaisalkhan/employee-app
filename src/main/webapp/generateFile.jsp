@@ -7,34 +7,44 @@
     <link rel="stylesheet" type="text/css" href="css/generateFile.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script>
-        function toggleSidebar() {
+        function toggleSidebar() 
+        {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) {
+            if (sidebar.classList.contains('active')) 
+            {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
-            } else {
+            } 
+            else 
+            {
                 sidebar.classList.add('active');
                 mainContent.classList.add('active');
             }
         }
 
-        function generateTextFile() {
+        function generateTextFile() 
+        {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "EmployeeDataToFileServlet", true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+            xhr.onreadystatechange = function () 
+            {
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
                     document.getElementById("message").innerText = xhr.responseText;
                 }
             };
             xhr.send();
         }
 
-        function generateXLSFile() {
+        function generateXLSFile() 
+        {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "EmployeeDataToXLSFileServlet", true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+            xhr.onreadystatechange = function () 
+            {
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
                     document.getElementById("message").innerText = xhr.responseText;
                 }
             };

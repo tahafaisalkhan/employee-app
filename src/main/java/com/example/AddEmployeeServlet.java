@@ -32,27 +32,31 @@ public class AddEmployeeServlet extends HttpServlet {
 
         Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
-        if (!emailPattern.matcher(email).matches()) {
+        if (!emailPattern.matcher(email).matches()) 
+        {
             request.setAttribute("errorMessage", "Invalid email format.");
             request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
             return;
         }
 
-        try {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            
+            {
                 String checkEmailSQL = "SELECT COUNT(*) FROM employees WHERE email = ?";
                 try (PreparedStatement checkEmailStmt = connection.prepareStatement(checkEmailSQL)) {
                     checkEmailStmt.setString(1, email);
                     ResultSet resultSet = checkEmailStmt.executeQuery();
-                    if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    if (resultSet.next() && resultSet.getInt(1) > 0) 
+                    {
                         request.setAttribute("errorMessage", "Email already exists. Please use a different email.");
                         request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
                         return;
                     }
                 }
 
-                // Insert into employees table
                 String insertEmployeeSQL = "INSERT INTO employees (first_name, last_name, email, hire_date) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement employeeStmt = connection.prepareStatement(insertEmployeeSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
                     employeeStmt.setString(1, firstName);
@@ -61,17 +65,18 @@ public class AddEmployeeServlet extends HttpServlet {
                     employeeStmt.setString(4, hireDate);
                     employeeStmt.executeUpdate();
 
-                    // Get generated employee ID
                     int employeeId = 0;
-                    try (ResultSet generatedKeys = employeeStmt.getGeneratedKeys()) {
-                        if (generatedKeys.next()) {
+                    try (ResultSet generatedKeys = employeeStmt.getGeneratedKeys()) 
+                    {
+                        if (generatedKeys.next()) 
+                        {
                             employeeId = generatedKeys.getInt(1);
                         }
                     }
 
-                    // Insert into employee_details table
                     String insertDetailsSQL = "INSERT INTO employee_details (id, address, street, province, city, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                    try (PreparedStatement detailsStmt = connection.prepareStatement(insertDetailsSQL)) {
+                    try (PreparedStatement detailsStmt = connection.prepareStatement(insertDetailsSQL)) 
+                    {
                         detailsStmt.setInt(1, employeeId);
                         detailsStmt.setString(2, address);
                         detailsStmt.setString(3, street);
@@ -84,7 +89,9 @@ public class AddEmployeeServlet extends HttpServlet {
                 }
             }
             response.sendRedirect("DBServlet");
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Error adding employee: " + e.getMessage());
             request.getRequestDispatcher("addEmployee.jsp").forward(request, response);

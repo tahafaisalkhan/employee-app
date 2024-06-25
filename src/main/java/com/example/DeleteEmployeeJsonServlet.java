@@ -18,9 +18,11 @@ public class DeleteEmployeeJsonServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = request.getReader()) {
+        try (BufferedReader reader = request.getReader()) 
+        {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) 
+            {
                 sb.append(line);
             }
         }
@@ -67,7 +69,8 @@ public class DeleteEmployeeJsonServlet extends HttpServlet {
             }
 
             connection.commit();
-        } catch (Exception e)
+        } 
+        catch (Exception e)
         {
             if (connection != null) 
             {

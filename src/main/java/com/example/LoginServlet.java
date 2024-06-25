@@ -23,19 +23,26 @@ public class LoginServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            {
                 String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (PreparedStatement statement = connection.prepareStatement(sql)) 
+                {
                     statement.setString(1, username);
                     statement.setString(2, password);
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        if (resultSet.next()) {
+                    try (ResultSet resultSet = statement.executeQuery()) 
+                    {
+                        if (resultSet.next()) 
+                        {
                             HttpSession session = request.getSession();
                             session.setAttribute("username", username);
                             response.sendRedirect("profile.jsp");
-                        } else {
+                        } 
+                        else 
+                        {
                             request.setAttribute("errorMessage", "Invalid username or password.");
                             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
                             dispatcher.forward(request, response);
@@ -43,7 +50,9 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }

@@ -53,7 +53,8 @@
             </div>
             <%
                 String errorMessage = (String) request.getAttribute("errorMessage");
-                if (errorMessage != null) {
+                if (errorMessage != null) 
+                {
             %>
                 <p><%= errorMessage %></p>
             <%
