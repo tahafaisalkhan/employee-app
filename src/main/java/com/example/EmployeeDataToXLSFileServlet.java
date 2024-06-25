@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,27 +43,54 @@ public class EmployeeDataToXLSFileServlet extends HttpServlet
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) 
+             FileOutputStream fileOut = new FileOutputStream(filename)) 
         {
-            
-            String sql = "SELECT * FROM employees";
+
+            Workbook workbook = new HSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Employee Data");
+
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("ID");
+            headerRow.createCell(1).setCellValue("First Name");
+            headerRow.createCell(2).setCellValue("Last Name");
+            headerRow.createCell(3).setCellValue("Email");
+            headerRow.createCell(4).setCellValue("Hire Date");
+            headerRow.createCell(5).setCellValue("Address");
+            headerRow.createCell(6).setCellValue("Street");
+            headerRow.createCell(7).setCellValue("Province");
+            headerRow.createCell(8).setCellValue("City");
+            headerRow.createCell(9).setCellValue("Country");
+            headerRow.createCell(10).setCellValue("Phone Number");
+
+            String sql = "SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, " +
+                         "d.address, d.street, d.province, d.city, d.country, d.phone_number " +
+                         "FROM employees e LEFT JOIN employee_details d ON e.id = d.id";
+
             try (PreparedStatement statement = connection.prepareStatement(sql);
                  ResultSet resultSet = statement.executeQuery()) 
             {
 
+                int rowIndex = 1;
                 while (resultSet.next()) 
                 {
-                    int id = resultSet.getInt("id");
-                    String firstName = resultSet.getString("first_name");
-                    String lastName = resultSet.getString("last_name");
-                    String email = resultSet.getString("email");
-                    String hireDate = resultSet.getString("hire_date");
+                    Row row = sheet.createRow(rowIndex++);
 
-                    String line = String.join("\t", String.valueOf(id), firstName, lastName, email, hireDate);
-                    writer.write(line);
-                    writer.newLine();
+                    row.createCell(0).setCellValue(resultSet.getInt("id"));
+                    row.createCell(1).setCellValue(resultSet.getString("first_name"));
+                    row.createCell(2).setCellValue(resultSet.getString("last_name"));
+                    row.createCell(3).setCellValue(resultSet.getString("email"));
+                    row.createCell(4).setCellValue(resultSet.getString("hire_date"));
+                    row.createCell(5).setCellValue(resultSet.getString("address"));
+                    row.createCell(6).setCellValue(resultSet.getString("street"));
+                    row.createCell(7).setCellValue(resultSet.getString("province"));
+                    row.createCell(8).setCellValue(resultSet.getString("city"));
+                    row.createCell(9).setCellValue(resultSet.getString("country"));
+                    row.createCell(10).setCellValue(resultSet.getString("phone_number"));
                 }
             }
+
+            workbook.write(fileOut);
         }
     }
 }
+
