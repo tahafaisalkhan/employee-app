@@ -13,8 +13,7 @@
         {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) 
-            {
+            if (sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
             } 
