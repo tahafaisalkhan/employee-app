@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.example.Employee" %>
 <%@ page import="com.example.EmployeeDetail" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Employee Details</title>
-    <link rel="stylesheet" type="text/css" href="css/employeeDetail.css">
+    <title>Employee Addresses</title>
+    <link rel="stylesheet" type="text/css" href="css/employeeAddress.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script>
         function toggleSidebar() {
@@ -33,44 +32,52 @@
                     <button type="submit" class="btn-logout">Logout</button>
                 </form>
             </div>
-            <h1 class="header-title">Employee Details</h1>
+            <h1 class="header-title">Employee Addresses</h1>
         </div>
         <div class="content">
-            <table>
+            <h2>Addresses</h2>
+            <table class="styled-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Hire Date</th>
+                        <th>Address</th>
+                        <th>Street</th>
+                        <th>Province</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Phone Number</th>
+                        <th>Address Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        List<Employee> employees = (List<Employee>) request.getAttribute("employees");
-                        if (employees != null) {
-                            for (Employee employee : employees) {
+                        List<EmployeeDetail> employeeDetails = (List<EmployeeDetail>) request.getAttribute("employeeDetails");
+                        if (employeeDetails != null) {
+                            for (EmployeeDetail detail : employeeDetails) {
                     %>
                                 <tr>
-                                    <td><a href="EmployeeAddressServlet?id=<%= employee.getId() %>"><%= employee.getId() %></a></td>
-                                    <td><%= employee.getFirstName() %></td>
-                                    <td><%= employee.getLastName() %></td>
-                                    <td><%= employee.getEmail() %></td>
-                                    <td><%= employee.getHireDate() %></td>
+                                    <td><%= detail.getAddress() %></td>
+                                    <td><%= detail.getStreet() %></td>
+                                    <td><%= detail.getProvince() %></td>
+                                    <td><%= detail.getCity() %></td>
+                                    <td><%= detail.getCountry() %></td>
+                                    <td><%= detail.getPhoneNumber() %></td>
+                                    <td><%= detail.getAddressType() %></td>
                                 </tr>
                     <%
                             }
                         } else {
                     %>
                             <tr>
-                                <td colspan="5">No data available</td>
+                                <td colspan="7">No data available</td>
                             </tr>
                     <%
                         }
                     %>
                 </tbody>
             </table>
+            <div class="center">
+                <a href="employeeDetails" class="btn">Back</a>
+            </div>
         </div>
     </div>
 </body>

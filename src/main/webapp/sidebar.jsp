@@ -7,6 +7,7 @@
     <a href="DBServlet">Employee List</a>
     <a href="employeeDetails">Employee Details</a>
     <a href="searchEmployee.jsp">Search Employee</a>
+    <a href="addAddress.jsp">Add Address</a>
     <a href="manageEmployees.jsp">Manage Employees</a>
     <a href="generateFile.jsp">Generate Files</a>
     <a href="uploadFiles.jsp">Upload Files</a>

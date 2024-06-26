@@ -186,5 +186,23 @@
     <servlet-name>SearchEmployeeServlet</servlet-name>
     <url-pattern>/SearchEmployeeServlet</url-pattern>
 </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EmployeeAddressServlet</servlet-name>
+    <servlet-class>com.example.EmployeeAddressServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeAddressServlet</servlet-name>
+    <url-pattern>/EmployeeAddressServlet</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>AddAddressServlet</servlet-name>
+    <servlet-class>com.example.AddAddressServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddAddressServlet</servlet-name>
+    <url-pattern>/AddAddressServlet</url-pattern>
+  </servlet-mapping>
   
 </web-app>

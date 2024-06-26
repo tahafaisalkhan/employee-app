@@ -34,40 +34,39 @@ public class EmployeeDetailsServlet extends HttpServlet {
 
                 System.out.println("Connected to the database successfully.");
 
-                String joinSQL = "SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, " +
-                                 "d.address, d.street, d.province, d.city, d.country, d.phone_number " +
-                                 "FROM employees e " +
-                                 "LEFT JOIN employee_details d ON e.id = d.id";
-                ResultSet resultSet = statement.executeQuery(joinSQL);
-                System.out.println("Fetched data from joined tables.");
+                String employeeSQL = "SELECT * FROM employees";
+                ResultSet employeeResultSet = statement.executeQuery(employeeSQL);
 
-                while (resultSet.next()) 
-                {
+                while (employeeResultSet.next()) {
                     Employee employee = new Employee();
-                    employee.setId(resultSet.getInt("id"));
-                    employee.setFirstName(resultSet.getString("first_name"));
-                    employee.setLastName(resultSet.getString("last_name"));
-                    employee.setEmail(resultSet.getString("email"));
-                    employee.setHireDate(resultSet.getDate("hire_date").toString());
-
-                    EmployeeDetail detail = new EmployeeDetail();
-                    detail.setId(resultSet.getInt("id"));
-                    detail.setAddress(resultSet.getString("address"));
-                    detail.setStreet(resultSet.getString("street"));
-                    detail.setProvince(resultSet.getString("province"));
-                    detail.setCity(resultSet.getString("city"));
-                    detail.setCountry(resultSet.getString("country"));
-                    detail.setPhoneNumber(resultSet.getString("phone_number"));
-
+                    employee.setId(employeeResultSet.getInt("id"));
+                    employee.setFirstName(employeeResultSet.getString("first_name"));
+                    employee.setLastName(employeeResultSet.getString("last_name"));
+                    employee.setEmail(employeeResultSet.getString("email"));
+                    employee.setHireDate(employeeResultSet.getDate("hire_date").toString());
                     employees.add(employee);
+                }
+                employeeResultSet.close();
+
+                String addressSQL = "SELECT * FROM employee_details";
+                ResultSet addressResultSet = statement.executeQuery(addressSQL);
+
+                while (addressResultSet.next()) {
+                    EmployeeDetail detail = new EmployeeDetail();
+//                    detail.setAddressId(addressResultSet.getInt("address_id"));
+                    detail.setId(addressResultSet.getInt("id"));
+                    detail.setAddress(addressResultSet.getString("address"));
+                    detail.setStreet(addressResultSet.getString("street"));
+                    detail.setProvince(addressResultSet.getString("province"));
+                    detail.setCity(addressResultSet.getString("city"));
+                    detail.setCountry(addressResultSet.getString("country"));
+                    detail.setPhoneNumber(addressResultSet.getString("phone_number"));
+                    detail.setAddressType(addressResultSet.getString("address_type"));
                     employeeDetails.add(detail);
                 }
-                resultSet.close();
-                System.out.println("All employee data processed.");
+                addressResultSet.close();
             }
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
