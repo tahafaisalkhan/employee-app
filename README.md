@@ -19,7 +19,6 @@ This is an Employee Management Application developed as part of an internship. T
 - **Sidebar**: Sidebar menu that can be opened and closed
 
 ## Screen Shots
-<img width="1440" alt="Screenshot 2024-06-28 at 1 48 20 AM" src="https://github.com/tahafaisalkhan/employee-app/assets/157153519/a6b1f73b-8ee9-4995-94f8-8f6ba045cc40">
 <img width="1440" alt="Screenshot 2024-06-28 at 1 48 20 AM 1" src="https://github.com/tahafaisalkhan/employee-app/assets/157153519/524b5ea7-3084-4e2d-a0eb-b61a464d074d">
 <img width="1440" alt="Screenshot 2024-06-28 at 1 48 34 AM" src="https://github.com/tahafaisalkhan/employee-app/assets/157153519/6db7be19-0763-435d-bdb0-aa2c701686a1">
 <img width="1440" alt="Screenshot 2024-06-28 at 1 48 43 AM" src="https://github.com/tahafaisalkhan/employee-app/assets/157153519/1cd30d3b-d017-4ce1-b666-4de4b57a96ca">
