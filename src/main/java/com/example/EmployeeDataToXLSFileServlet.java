@@ -45,7 +45,6 @@ public class EmployeeDataToXLSFileServlet extends HttpServlet
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              FileOutputStream fileOut = new FileOutputStream(filename)) 
         {
-
             Workbook workbook = new HSSFWorkbook();
             Sheet sheet = workbook.createSheet("Employee Data");
 
@@ -61,15 +60,15 @@ public class EmployeeDataToXLSFileServlet extends HttpServlet
             headerRow.createCell(8).setCellValue("City");
             headerRow.createCell(9).setCellValue("Country");
             headerRow.createCell(10).setCellValue("Phone Number");
+            headerRow.createCell(11).setCellValue("Address Type");
 
             String sql = "SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, " +
-                         "d.address, d.street, d.province, d.city, d.country, d.phone_number " +
+                         "d.address, d.street, d.province, d.city, d.country, d.phone_number, d.address_type " +
                          "FROM employees e LEFT JOIN employee_details d ON e.id = d.id";
 
             try (PreparedStatement statement = connection.prepareStatement(sql);
                  ResultSet resultSet = statement.executeQuery()) 
             {
-
                 int rowIndex = 1;
                 while (resultSet.next()) 
                 {
@@ -86,6 +85,7 @@ public class EmployeeDataToXLSFileServlet extends HttpServlet
                     row.createCell(8).setCellValue(resultSet.getString("city"));
                     row.createCell(9).setCellValue(resultSet.getString("country"));
                     row.createCell(10).setCellValue(resultSet.getString("phone_number"));
+                    row.createCell(11).setCellValue(resultSet.getString("address_type"));
                 }
             }
 
@@ -93,4 +93,3 @@ public class EmployeeDataToXLSFileServlet extends HttpServlet
         }
     }
 }
-

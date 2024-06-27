@@ -14,7 +14,8 @@ public class AddAddressServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
         int employeeId = Integer.parseInt(request.getParameter("employeeId"));
         String address = request.getParameter("address");
         String street = request.getParameter("street");
@@ -28,12 +29,15 @@ public class AddAddressServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
+            {
                 String sql = "INSERT INTO employee_details (id, address, street, province, city, country, phone_number, address_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (PreparedStatement statement = connection.prepareStatement(sql)) 
+                {
                     statement.setInt(1, employeeId);
                     statement.setString(2, address);
                     statement.setString(3, street);
@@ -45,7 +49,9 @@ public class AddAddressServlet extends HttpServlet {
                     statement.executeUpdate();
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
 

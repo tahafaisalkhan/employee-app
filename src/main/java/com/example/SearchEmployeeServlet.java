@@ -55,7 +55,7 @@ public class SearchEmployeeServlet extends HttpServlet
                         }
                     }
 
-                    String sqlDetails = "SELECT id, address, street, province, city, country, phone_number FROM employee_details";
+                    String sqlDetails = "SELECT id, address, street, province, city, country, phone_number, address_type FROM employee_details";
                     try (PreparedStatement statement = connection.prepareStatement(sqlDetails);
                          ResultSet resultSet = statement.executeQuery())
                     {
@@ -69,6 +69,7 @@ public class SearchEmployeeServlet extends HttpServlet
                             employeeDetail.setCity(resultSet.getString("city"));
                             employeeDetail.setCountry(resultSet.getString("country"));
                             employeeDetail.setPhoneNumber(resultSet.getString("phone_number"));
+                            employeeDetail.setAddressType(resultSet.getString("address_type"));
                             employeeDetails.add(employeeDetail);
                         }
                     }
@@ -83,7 +84,7 @@ public class SearchEmployeeServlet extends HttpServlet
         }
 
         Employee result = null;
-        EmployeeDetail resultDetail = null;
+        List<EmployeeDetail> resultDetails = new ArrayList<>();
         for (Employee employee : employees) 
         {
             if (String.valueOf(employee.getId()).equals(search) || employee.getEmail().equalsIgnoreCase(search))
@@ -99,14 +100,13 @@ public class SearchEmployeeServlet extends HttpServlet
             {
                 if (detail.getId() == result.getId()) 
                 {
-                    resultDetail = detail;
-                    break;
+                    resultDetails.add(detail);
                 }
             }
         }
 
         request.setAttribute("result", result);
-        request.setAttribute("resultDetail", resultDetail);
+        request.setAttribute("resultDetails", resultDetails);
         request.setAttribute("searchPerformed", true);
         RequestDispatcher dispatcher = request.getRequestDispatcher("searchEmployee.jsp");
         dispatcher.forward(request, response);

@@ -67,7 +67,7 @@ public class UploadFileServlet extends HttpServlet
             while ((line = reader.readLine()) != null) 
             {
                 String[] columns = line.split("\\|");
-                if (columns.length >= 10) 
+                if (columns.length >= 11) 
                 {
                     String firstName = columns[1];
                     String lastName = columns[2];
@@ -79,7 +79,8 @@ public class UploadFileServlet extends HttpServlet
                     String city = columns[8];
                     String country = columns[9];
                     String phoneNumber = columns[10];
-                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber);
+                    String addressType = columns[11];
+                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber, addressType);
                 }
             }
         }
@@ -111,9 +112,10 @@ public class UploadFileServlet extends HttpServlet
                 String city = getCellValue(row, 7);
                 String country = getCellValue(row, 8);
                 String phoneNumber = getCellValue(row, 9);
+                String addressType = getCellValue(row, 10);
                 if (firstName != null && lastName != null && email != null && hireDate != null) 
                 {
-                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber);
+                    addEmployeeToDatabase(firstName, lastName, email, hireDate, address, street, province, city, country, phoneNumber, addressType);
                 }
             }
         } 
@@ -149,7 +151,7 @@ public class UploadFileServlet extends HttpServlet
         }
     }
 
-    private void addEmployeeToDatabase(String firstName, String lastName, String email, String hireDate, String address, String street, String province, String city, String country, String phoneNumber) throws Exception {
+    private void addEmployeeToDatabase(String firstName, String lastName, String email, String hireDate, String address, String street, String province, String city, String country, String phoneNumber, String addressType) throws Exception {
         String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
@@ -157,32 +159,36 @@ public class UploadFileServlet extends HttpServlet
 
         Connection connection = null;
 
-        try {
+        try 
+        {
             connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-            // Begin transaction
             connection.setAutoCommit(false);
 
-            // Insert into employees table
             String insertEmployeeSQL = "INSERT INTO employees (first_name, last_name, email, hire_date) VALUES (?, ?, ?, ?)";
             int employeeId;
-            try (PreparedStatement statement = connection.prepareStatement(insertEmployeeSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement statement = connection.prepareStatement(insertEmployeeSQL, PreparedStatement.RETURN_GENERATED_KEYS)) 
+            {
                 statement.setString(1, firstName);
                 statement.setString(2, lastName);
                 statement.setString(3, email);
                 statement.setString(4, hireDate);
                 statement.executeUpdate();
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) 
+                {
+                    if (generatedKeys.next()) 
+                    {
                         employeeId = generatedKeys.getInt(1);
-                    } else {
+                    } 
+                    else 
+                    {
                         throw new SQLException("Failed to retrieve employee ID.");
                     }
                 }
             }
 
-            // Insert into employee_details table
-            String insertDetailsSQL = "INSERT INTO employee_details (id, address, street, province, city, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(insertDetailsSQL)) {
+            String insertDetailsSQL = "INSERT INTO employee_details (id, address, street, province, city, country, phone_number, address_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(insertDetailsSQL)) 
+            {
                 statement.setInt(1, employeeId);
                 statement.setString(2, address);
                 statement.setString(3, street);
@@ -190,18 +196,22 @@ public class UploadFileServlet extends HttpServlet
                 statement.setString(5, city);
                 statement.setString(6, country);
                 statement.setString(7, phoneNumber);
+                statement.setString(8, addressType);
                 statement.executeUpdate();
             }
 
-            // Commit transaction
             connection.commit();
-        } catch (Exception e) {
-            // Rollback transaction on error
-            if (connection != null) {
+        } 
+        catch (Exception e) 
+        {
+            if (connection != null) 
+            {
                 connection.rollback();
             }
             throw e;
-        } finally {
+        } 
+        finally 
+        {
             if (connection != null) {
                 connection.setAutoCommit(true);
                 connection.close();

@@ -10,13 +10,17 @@
     <link rel="stylesheet" type="text/css" href="css/employeeDetail.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script>
-        function toggleSidebar() {
+        function toggleSidebar() 
+        {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) {
+            if (sidebar.classList.contains('active')) 
+            {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
-            } else {
+            } 
+            else 
+            {
                 sidebar.classList.add('active');
                 mainContent.classList.add('active');
             }
@@ -61,7 +65,9 @@
                                 </tr>
                     <%
                             }
-                        } else {
+                        } 
+                        else 
+                        {
                     %>
                             <tr>
                                 <td colspan="5">No data available</td>
@@ -71,6 +77,11 @@
                     %>
                 </tbody>
             </table>
+            <div class="center">
+                <form action="addAddress.jsp" method="get" style="margin-top: 10px;">
+                    <button type="submit" class="btn-add">Add Address</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

@@ -26,15 +26,6 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>DBServlet</servlet-name>
-    <servlet-class>com.example.DBServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DBServlet</servlet-name>
-    <url-pattern>/DBServlet</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
     <servlet-name>AddEmployeeServlet</servlet-name>
     <servlet-class>com.example.AddEmployeeServlet</servlet-class>
   </servlet>
@@ -42,16 +33,7 @@
     <servlet-name>AddEmployeeServlet</servlet-name>
     <url-pattern>/AddEmployeeServlet</url-pattern>
   </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>RemoveEmployeeServlet</servlet-name>
-    <servlet-class>com.example.RemoveEmployeeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RemoveEmployeeServlet</servlet-name>
-    <url-pattern>/RemoveEmployeeServlet</url-pattern>
-  </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>com.example.LogoutServlet</servlet-class>
@@ -204,5 +186,15 @@
     <servlet-name>AddAddressServlet</servlet-name>
     <url-pattern>/AddAddressServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>SendEmployeeDetailsJsonServlet</servlet-name>
+    <servlet-class>com.example.SendEmployeeDetailsJsonServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>SendEmployeeDetailsJsonServlet</servlet-name>
+    <url-pattern>/api/employeeDetails</url-pattern>
+</servlet-mapping>
+  
   
 </web-app>

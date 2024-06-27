@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.example.Employee" %>
 <%@ page import="com.example.EmployeeDetail" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,8 @@
         {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            if (sidebar.classList.contains('active')) {
+            if (sidebar.classList.contains('active')) 
+            {
                 sidebar.classList.remove('active');
                 mainContent.classList.remove('active');
             } 
@@ -47,8 +49,8 @@
         <div class="content">
             <%
                 Employee result = (Employee) request.getAttribute("result");
-                EmployeeDetail resultDetail = (EmployeeDetail) request.getAttribute("resultDetail");
-                if (result != null && resultDetail != null) 
+                List<EmployeeDetail> resultDetails = (List<EmployeeDetail>) request.getAttribute("resultDetails");
+                if (result != null && resultDetails != null && !resultDetails.isEmpty()) 
                 {
             %>
                 <div class="search-results">
@@ -60,13 +62,37 @@
                     <p>Email: <%= result.getEmail() %></p>
                     <p>Hire Date: <%= result.getHireDate() %></p>
 
-                    <h3>Employee Details</h3>
-                    <p>Address: <%= resultDetail.getAddress() %></p>
-                    <p>Street: <%= resultDetail.getStreet() %></p>
-                    <p>Province: <%= resultDetail.getProvince() %></p>
-                    <p>City: <%= resultDetail.getCity() %></p>
-                    <p>Country: <%= resultDetail.getCountry() %></p>
-                    <p>Phone Number: <%= resultDetail.getPhoneNumber() %></p>
+                    <h3>Employee Addresses</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Street</th>
+                                <th>Province</th>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Phone Number</th>
+                                <th>Address Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                for (EmployeeDetail detail : resultDetails) {
+                            %>
+                                <tr>
+                                    <td><%= detail.getAddress() %></td>
+                                    <td><%= detail.getStreet() %></td>
+                                    <td><%= detail.getProvince() %></td>
+                                    <td><%= detail.getCity() %></td>
+                                    <td><%= detail.getCountry() %></td>
+                                    <td><%= detail.getPhoneNumber() %></td>
+                                    <td><%= detail.getAddressType() %></td>
+                                </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
                 </div>
             <%
                 } 

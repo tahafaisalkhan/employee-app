@@ -40,17 +40,14 @@ public class EmployeeDataToFileServlet extends HttpServlet {
 
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) 
-        
         {
-
             String sql = "SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, " +
-                         "d.address, d.street, d.province, d.city, d.country, d.phone_number " +
+                         "d.address, d.street, d.province, d.city, d.country, d.phone_number, d.address_type " +
                          "FROM employees e LEFT JOIN employee_details d ON e.id = d.id";
 
             try (PreparedStatement statement = connection.prepareStatement(sql);
                  ResultSet resultSet = statement.executeQuery()) 
             {
-
                 while (resultSet.next()) 
                 {
                     int id = resultSet.getInt("id");
@@ -64,9 +61,10 @@ public class EmployeeDataToFileServlet extends HttpServlet {
                     String city = resultSet.getString("city");
                     String country = resultSet.getString("country");
                     String phoneNumber = resultSet.getString("phone_number");
+                    String addressType = resultSet.getString("address_type");
 
                     String line = String.join("|", String.valueOf(id), firstName, lastName, email, hireDate, 
-                                               address, street, province, city, country, phoneNumber);
+                                               address, street, province, city, country, phoneNumber, addressType);
                     writer.write(line);
                     writer.newLine();
                 }
