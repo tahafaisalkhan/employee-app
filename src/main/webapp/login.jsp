@@ -25,7 +25,8 @@
             </form>
         </div>
         <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-        <% if (errorMessage != null) { %>
+        <% if (errorMessage != null) 
+        { %>
             <div class="error-message"><%= errorMessage %></div>
         <% } %>
     </div>
