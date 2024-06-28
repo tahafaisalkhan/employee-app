@@ -22,6 +22,42 @@
                 mainContent.classList.add('active');
             }
         }
+
+        function validateForm() 
+        {
+            const addressType = document.getElementById('addressType').value;
+            const province = document.getElementById('province').value;
+            const city = document.getElementById('city').value;
+            const country = document.getElementById('country').value;
+            const numberPattern = /^[0-9]+$/;
+            const textPattern = /^[a-zA-Z ]+$/;
+
+            if (addressType !== 'Home' && addressType !== 'Office') 
+            {
+                alert('Address Type must be Home or Office');
+                return false;
+            }
+
+            if (!textPattern.test(province))
+{
+                alert('Province must contain only alphabetic characters');
+                return false;
+            }
+
+            if (!textPattern.test(city)) 
+            {
+                alert('City must contain only alphabetic characters');
+                return false;
+            }
+
+            if (!textPattern.test(country)) 
+            {
+                alert('Country must contain only alphabetic characters');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </head>
 <body>
@@ -37,7 +73,15 @@
             <h1 class="header-title">Add Address for Employee</h1>
         </div>
         <div class="content">
-            <form action="AddAddressServlet" method="POST">
+            <% 
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                if (errorMessage != null) {
+            %>
+                <div class="error-message"><%= errorMessage %></div>
+            <% 
+                }
+            %>
+            <form action="AddAddressServlet" method="POST" onsubmit="return validateForm()">
                 <label for="employeeId">Employee ID:</label>
                 <input type="text" id="employeeId" name="employeeId" required><br>
 
