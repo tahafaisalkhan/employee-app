@@ -18,7 +18,7 @@
                     <button type="submit" class="btn-logout">Logout</button>
                 </form>
             </div>
-            <h2 class="header-title">Fund Transfer</h2>
+            <h1 class="header-title">Fund Transfer</h1>
         </div>
         <div class="content">
             <form action="FundTransferServlet" method="POST">
