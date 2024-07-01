@@ -23,8 +23,7 @@ public class FundTransferServlet extends HttpServlet {
         String sessionToken = (String) session.getAttribute("token");
         String inputToken = request.getParameter("token");
 
-        if (sessionToken == null || !sessionToken.equals(inputToken)) 
-        {
+        if (sessionToken == null || !sessionToken.equals(inputToken)) {
             request.setAttribute("errorMessage", "Invalid token. Please try again.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("fundTransfer.jsp");
             dispatcher.forward(request, response);
@@ -34,13 +33,10 @@ public class FundTransferServlet extends HttpServlet {
         String amountStr = request.getParameter("amount");
         String employeeIdsStr = request.getParameter("employeeIds");
         double amount;
-        
-        try 
-        {
+
+        try {
             amount = Double.parseDouble(amountStr);
-        } 
-        catch (NumberFormatException e) 
-        {
+        } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid amount. Please enter a valid number.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("fundTransfer.jsp");
             dispatcher.forward(request, response);
@@ -49,14 +45,10 @@ public class FundTransferServlet extends HttpServlet {
 
         String[] employeeIdsArray = employeeIdsStr.split(",");
         List<Integer> employeeIds = new ArrayList<>();
-        for (String idStr : employeeIdsArray) 
-        {
-            try 
-            {
+        for (String idStr : employeeIdsArray) {
+            try {
                 employeeIds.add(Integer.parseInt(idStr.trim()));
-            }
-            catch (NumberFormatException e) 
-            {
+            } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "Invalid employee ID: " + idStr);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("fundTransfer.jsp");
                 dispatcher.forward(request, response);
@@ -74,14 +66,16 @@ public class FundTransferServlet extends HttpServlet {
             try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
             {
                 List<Integer> invalidEmployeeIds = new ArrayList<>();
-                for (Integer employeeId : employeeIds) {
+                for (Integer employeeId : employeeIds) 
+                {
                     String checkEmployeeSql = "SELECT id FROM employees WHERE id = ?";
                     try (PreparedStatement checkEmployeeStmt = connection.prepareStatement(checkEmployeeSql)) 
                     {
                         checkEmployeeStmt.setInt(1, employeeId);
                         try (ResultSet resultSet = checkEmployeeStmt.executeQuery()) 
                         {
-                            if (!resultSet.next()) {
+                            if (!resultSet.next()) 
+                            {
                                 invalidEmployeeIds.add(employeeId);
                             }
                         }
@@ -101,14 +95,47 @@ public class FundTransferServlet extends HttpServlet {
                     return;
                 }
 
+                String selectFundsSql = "SELECT funds FROM funds WHERE employee_id = ?";
+                String updateFundsSql = "UPDATE funds SET funds = ? WHERE employee_id = ?";
                 String insertFundsSql = "INSERT INTO funds (employee_id, funds) VALUES (?, ?)";
-                try (PreparedStatement insertFundsStmt = connection.prepareStatement(insertFundsSql)) 
+
+                for (Integer employeeId : employeeIds) 
                 {
-                    for (Integer employeeId : employeeIds) 
+                    double currentFunds = 0;
+                    boolean fundsExist = false;
+
+                    try (PreparedStatement selectFundsStmt = connection.prepareStatement(selectFundsSql)) 
                     {
-                        insertFundsStmt.setInt(1, employeeId);
-                        insertFundsStmt.setDouble(2, amount);
-                        insertFundsStmt.executeUpdate();
+                        selectFundsStmt.setInt(1, employeeId);
+                        try (ResultSet resultSet = selectFundsStmt.executeQuery()) 
+                        {
+                            if (resultSet.next()) 
+                            {
+                                currentFunds = resultSet.getDouble("funds");
+                                fundsExist = true;
+                            }
+                        }
+                    }
+
+                    double newFunds = currentFunds + amount;
+
+                    if (fundsExist) 
+                    {
+                        try (PreparedStatement updateFundsStmt = connection.prepareStatement(updateFundsSql)) 
+                        {
+                            updateFundsStmt.setDouble(1, newFunds);
+                            updateFundsStmt.setInt(2, employeeId);
+                            updateFundsStmt.executeUpdate();
+                        }
+                    } 
+                    else 
+                    {
+                        try (PreparedStatement insertFundsStmt = connection.prepareStatement(insertFundsSql)) 
+                        {
+                            insertFundsStmt.setInt(1, employeeId);
+                            insertFundsStmt.setDouble(2, newFunds);
+                            insertFundsStmt.executeUpdate();
+                        }
                     }
                 }
 
