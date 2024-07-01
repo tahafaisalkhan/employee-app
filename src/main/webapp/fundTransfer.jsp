@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Fund Transfer</title>
     <link rel="stylesheet" type="text/css" href="css/fundTransfer.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+   
 </head>
 <body>
     <jsp:include page="sidebar.jsp" />
@@ -42,7 +44,7 @@
         </div>
 
         <div class="token-panel">
-            <button class="btn-generate-token" onclick="generateToken()">Generate Token</button>
+            <button class="btn-generate-token" onclick="generateToken()">Show My Token</button>
             <p id="tokenDisplay" class="token-display"></p>
         </div>
     </div>
