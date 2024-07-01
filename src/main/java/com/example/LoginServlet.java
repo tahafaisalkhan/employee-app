@@ -47,6 +47,8 @@ public class LoginServlet extends HttpServlet
 
                             String token = UUID.randomUUID().toString();
                             session.setAttribute("token", token);
+                            System.out.println("Generated token for user " + username + ": " + token);
+
 
                             response.sendRedirect("home.jsp");
                         } 

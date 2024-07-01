@@ -195,6 +195,16 @@
     <servlet-name>SendEmployeeDetailsJsonServlet</servlet-name>
     <url-pattern>/api/employeeDetails</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>FundTransferServlet</servlet-name>
+    <servlet-class>com.example.FundTransferServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>FundTransferServlet</servlet-name>
+    <url-pattern>/FundTransferServlet</url-pattern>
+</servlet-mapping>
+
   
   
 </web-app>
