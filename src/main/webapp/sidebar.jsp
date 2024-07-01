@@ -14,12 +14,12 @@
     { %>
         <a href="searchEmployee.jsp">Search Employee</a>
         <a href="manageEmployees.jsp">Manage Employees</a>
+        <a href="fundTransfer.jsp">Fund Transfer</a>
     <% } %>
     
-    <% if (role.equals("Admin") || role.equals("Observer") || role.equals("Manager")) 
+    <% if (role.equals("Admin") || role.equals("Observer") || role.equals("Manager") || role.equals("Analyst")) 
     { %>
         <a href="employeeDetails">Employee Details</a>
-        <a href="fundTransfer.jsp">Fund Transfer</a>
     <% } %>
     
     <% if (role.equals("Admin")) 

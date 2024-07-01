@@ -40,6 +40,7 @@
         <div class="content">
             <h2>User Profile</h2>
             <p><strong>Username:</strong> <%= session.getAttribute("username") %></p>
+            <p><strong>Role:</strong> <%= session.getAttribute("role") %></p>
             <hr>
 
             <h3>Welcome to the Employee Managing System!</h3>
