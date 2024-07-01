@@ -30,7 +30,7 @@ public class AdminServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) 
             {
-                String sql = "SELECT id, username FROM users";
+                String sql = "SELECT id, username FROM admin";
                 try (PreparedStatement statement = connection.prepareStatement(sql);
                      ResultSet resultSet = statement.executeQuery()) 
                 {

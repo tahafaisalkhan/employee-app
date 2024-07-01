@@ -15,19 +15,26 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchEmployeeServlet extends HttpServlet 
-{
+public class SearchEmployeeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String search = request.getParameter("search");
         HttpSession session = request.getSession();
+        String role = (String) session.getAttribute("role");
+
+        if (role == null || (!role.equals("Observer") && !role.equals("Manager") && !role.equals("Admin"))) 
+        {
+            request.getSession().setAttribute("errorMessage", "You do not have authorization to access this page.");
+            response.sendRedirect("home.jsp");
+            return;
+        }
+
+        String search = request.getParameter("search");
 
         List<Employee> employees = (List<Employee>) session.getAttribute("employees");
         List<EmployeeDetail> employeeDetails = (List<EmployeeDetail>) session.getAttribute("employeeDetails");
 
-        if (employees == null || employeeDetails == null) 
-        {
+        if (employees == null || employeeDetails == null) {
             employees = new ArrayList<>();
             employeeDetails = new ArrayList<>();
             String jdbcUrl = "jdbc:mysql://localhost:3306/Employees";
@@ -57,7 +64,7 @@ public class SearchEmployeeServlet extends HttpServlet
 
                     String sqlDetails = "SELECT id, address, street, province, city, country, phone_number, address_type FROM employee_details";
                     try (PreparedStatement statement = connection.prepareStatement(sqlDetails);
-                         ResultSet resultSet = statement.executeQuery())
+                         ResultSet resultSet = statement.executeQuery()) 
                     {
                         while (resultSet.next()) 
                         {
@@ -87,7 +94,7 @@ public class SearchEmployeeServlet extends HttpServlet
         List<EmployeeDetail> resultDetails = new ArrayList<>();
         for (Employee employee : employees) 
         {
-            if (String.valueOf(employee.getId()).equals(search) || employee.getEmail().equalsIgnoreCase(search))
+            if (String.valueOf(employee.getId()).equals(search) || employee.getEmail().equalsIgnoreCase(search)) 
             {
                 result = employee;
                 break;

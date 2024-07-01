@@ -25,19 +25,22 @@ public class EmployeeDetailsServlet extends HttpServlet {
         String jdbcUser = "root";
         String jdbcPassword = "tahafaisalkhan";
 
-        try {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Driver loaded successfully.");
 
             try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-                 Statement statement = connection.createStatement()) {
+                 Statement statement = connection.createStatement()) 
+            {
 
                 System.out.println("Connected to the database successfully.");
 
                 String employeeSQL = "SELECT * FROM employees";
                 ResultSet employeeResultSet = statement.executeQuery(employeeSQL);
 
-                while (employeeResultSet.next()) {
+                while (employeeResultSet.next()) 
+                {
                     Employee employee = new Employee();
                     employee.setId(employeeResultSet.getInt("id"));
                     employee.setFirstName(employeeResultSet.getString("first_name"));
@@ -66,7 +69,9 @@ public class EmployeeDetailsServlet extends HttpServlet {
                 }
                 addressResultSet.close();
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
 

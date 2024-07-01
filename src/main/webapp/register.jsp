@@ -16,12 +16,6 @@
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br>
-            
-            <label for="adminUsername">Admin Username:</label>
-            <input type="text" id="adminUsername" name="adminUsername" required><br>
-
-            <label for="adminPassword">Admin Password:</label>
-            <input type="password" id="adminPassword" name="adminPassword" required><br>
 
             <button type="submit" class="btn-add">Register</button>
         </form>
