@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.UUID;
 
 public class LoginServlet extends HttpServlet 
 {
@@ -40,15 +39,11 @@ public class LoginServlet extends HttpServlet
                     statement.setString(2, hashPassword(password));
                     try (ResultSet resultSet = statement.executeQuery()) 
                     {
-                        if (resultSet.next()) {
+                        if (resultSet.next()) 
+                        {
                             HttpSession session = request.getSession();
                             session.setAttribute("username", username);
                             session.setAttribute("role", resultSet.getString("role"));
-
-                            String token = UUID.randomUUID().toString();
-                            session.setAttribute("token", token);
-                            System.out.println("Generated token for user " + username + ": " + token);
-
 
                             response.sendRedirect("home.jsp");
                         } 

@@ -205,6 +205,22 @@
     <url-pattern>/FundTransferServlet</url-pattern>
 </servlet-mapping>
 
-  
+<servlet>
+    <servlet-name>GenerateTokenServlet</servlet-name>
+    <servlet-class>com.example.GenerateTokenServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>GenerateTokenServlet</servlet-name>
+    <url-pattern>/GenerateTokenServlet</url-pattern>
+</servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetEmployeeInfoServlet</servlet-name>
+        <servlet-class>com.example.GetEmployeeInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetEmployeeInfoServlet</servlet-name>
+        <url-pattern>/GetEmployeeInfoServlet</url-pattern>
+    </servlet-mapping>
   
 </web-app>

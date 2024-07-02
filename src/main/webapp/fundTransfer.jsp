@@ -6,7 +6,6 @@
     <title>Fund Transfer</title>
     <link rel="stylesheet" type="text/css" href="css/fundTransfer.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
-   
 </head>
 <body>
     <jsp:include page="sidebar.jsp" />
@@ -28,9 +27,6 @@
                 <label for="employeeIds">Employee IDs (comma-separated):</label>
                 <input type="text" id="employeeIds" name="employeeIds" required><br>
 
-                <label for="token">Token:</label>
-                <input type="text" id="token" name="token" required><br>
-
                 <button type="submit" class="btn-transfer">Transfer Funds</button>
             </form>
             <% 
@@ -41,11 +37,6 @@
             <% 
             }
             %>
-        </div>
-
-        <div class="token-panel">
-            <button class="btn-generate-token" onclick="generateToken()">Show My Token</button>
-            <p id="tokenDisplay" class="token-display"></p>
         </div>
     </div>
     <script>
@@ -59,11 +50,6 @@
                 sidebar.classList.add('active');
                 mainContent.classList.add('active');
             }
-        }
-
-        function generateToken() {
-            const token = '<%= session.getAttribute("token") %>';
-            document.getElementById('tokenDisplay').innerText = token;
         }
     </script>
 </body>

@@ -19,17 +19,6 @@ public class FundTransferServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String sessionToken = (String) session.getAttribute("token");
-        String inputToken = request.getParameter("token");
-
-        if (sessionToken == null || !sessionToken.equals(inputToken)) {
-            request.setAttribute("errorMessage", "Invalid token. Please try again.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("fundTransfer.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
-
         String amountStr = request.getParameter("amount");
         String employeeIdsStr = request.getParameter("employeeIds");
         double amount;
