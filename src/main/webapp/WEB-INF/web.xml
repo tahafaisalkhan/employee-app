@@ -222,5 +222,16 @@
         <servlet-name>GetEmployeeInfoServlet</servlet-name>
         <url-pattern>/GetEmployeeInfoServlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+    <servlet-name>CheckEmailServlet</servlet-name>
+    <servlet-class>com.example.CheckEmailServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>CheckEmailServlet</servlet-name>
+    <url-pattern>/CheckEmailServlet</url-pattern>
+</servlet-mapping>
+    
+    
   
 </web-app>
