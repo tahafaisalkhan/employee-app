@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -54,9 +55,9 @@ public class EmployeeDetailsServlet extends HttpServlet {
                 String addressSQL = "SELECT * FROM employee_details";
                 ResultSet addressResultSet = statement.executeQuery(addressSQL);
 
-                while (addressResultSet.next()) {
+                while (addressResultSet.next()) 
+                {
                     EmployeeDetail detail = new EmployeeDetail();
-//                    detail.setAddressId(addressResultSet.getInt("address_id"));
                     detail.setId(addressResultSet.getInt("id"));
                     detail.setAddress(addressResultSet.getString("address"));
                     detail.setStreet(addressResultSet.getString("street"));
@@ -75,6 +76,16 @@ public class EmployeeDetailsServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        for (Employee employee : employees) 
+        {
+            printObjectFields(employee);
+        }
+
+        for (EmployeeDetail detail : employeeDetails) 
+        {
+            printObjectFields(detail);
+        }
+
         request.setAttribute("employees", employees);
         request.setAttribute("employeeDetails", employeeDetails);
         System.out.println("Set employees and employeeDetails attributes with data.");
@@ -82,4 +93,27 @@ public class EmployeeDetailsServlet extends HttpServlet {
         request.getRequestDispatcher("/employeeDetails.jsp").forward(request, response);
         System.out.println("Forwarded to employeeDetails.jsp.");
     }
+
+    private void printObjectFields(Object obj) 
+    {
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        System.out.println("Class: " + clazz.getSimpleName());
+        for (Field field : fields) 
+        {
+            field.setAccessible(true); 
+            try 
+            {
+                Object value = field.get(obj);
+                System.out.println("Field: " + field.getName() + " = " + value);
+            } 
+            catch (IllegalAccessException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        System.out.println();
+    }
 }
+
